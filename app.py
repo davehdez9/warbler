@@ -18,7 +18,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = (
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = False
-app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = True
+app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', "it's a secret")
 toolbar = DebugToolbarExtension(app)
 
@@ -51,6 +51,7 @@ def do_logout():
 
     if CURR_USER_KEY in session:
         del session[CURR_USER_KEY]
+
 
 
 @app.route('/signup', methods=["GET", "POST"])
@@ -87,7 +88,7 @@ def signup():
 
     else:
         return render_template('users/signup.html', form=form)
-
+    
 
 @app.route('/login', methods=["GET", "POST"])
 def login():
@@ -105,6 +106,7 @@ def login():
             return redirect("/")
 
         flash("Invalid credentials.", 'danger')
+ 
 
     return render_template('users/login.html', form=form)
 
@@ -112,8 +114,12 @@ def login():
 @app.route('/logout')
 def logout():
     """Handle logout of user."""
-
     # IMPLEMENT THIS
+    do_logout()
+    flash('You are now Logout', "info")
+    return redirect('/login')
+
+    
 
 
 ##############################################################################
@@ -132,6 +138,8 @@ def list_users():
         users = User.query.all()
     else:
         users = User.query.filter(User.username.like(f"%{search}%")).all()
+
+
 
     return render_template('users/index.html', users=users)
 
@@ -320,3 +328,5 @@ def add_header(req):
     req.headers["Expires"] = "0"
     req.headers['Cache-Control'] = 'public, max-age=0'
     return req
+
+
