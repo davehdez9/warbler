@@ -219,7 +219,7 @@ def stop_following(follow_id):
 @app.route('/users/<int:user_id>/likes', methods=["GET"])
 def show_likes(user_id):
     if not g.user:
-        flash("Unauthorized", "danger")
+        flash("Access unauthorized.", "danger")
         return redirect("/")
     
     user = User.query.get_or_404(user_id)
@@ -229,7 +229,7 @@ def show_likes(user_id):
 def add_like(message_id):
 
     if not g.user:
-        flash("Unauthorized", "danger")
+        flash("Access unauthorized.", "danger")
         return redirect("/")
 
     liked_message = Message.query.get_or_404(message_id)
@@ -255,7 +255,7 @@ def profile():
     # IMPLEMENT THIS
 
     if not g.user:
-        flash("Unauthorized Access", "danger")
+        flash("Access unauthorized.", "danger")
         return redirect("/")
 
     user = g.user
