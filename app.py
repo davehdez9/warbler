@@ -20,7 +20,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = False
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', "it's a secret")
-toolbar = DebugToolbarExtension(app)
+# toolbar = DebugToolbarExtension(app)
 
 connect_db(app)
 
@@ -219,7 +219,7 @@ def stop_following(follow_id):
 @app.route('/users/<int:user_id>/likes', methods=["GET"])
 def show_likes(user_id):
     if not g.user:
-        flash("Unauthorized", "danger")
+        flash("Access unauthorized.", "danger")
         return redirect("/")
     
     user = User.query.get_or_404(user_id)
@@ -229,7 +229,7 @@ def show_likes(user_id):
 def add_like(message_id):
 
     if not g.user:
-        flash("Unauthorized", "danger")
+        flash("Access unauthorized.", "danger")
         return redirect("/")
 
     liked_message = Message.query.get_or_404(message_id)
@@ -255,7 +255,7 @@ def profile():
     # IMPLEMENT THIS
 
     if not g.user:
-        flash("Unauthorized Access", "danger")
+        flash("Access unauthorized.", "danger")
         return redirect("/")
 
     user = g.user
